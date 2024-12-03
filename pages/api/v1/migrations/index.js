@@ -3,6 +3,7 @@ import database from "infra/database.js";
 import { join } from "node:path";
 
 export default async function migrations(request, response) {
+  console.log("homologação");
   const dbClient = await database.getNewClient();
 
   const defaultMigrationOptions = {
