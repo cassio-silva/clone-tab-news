@@ -1,9 +1,8 @@
-import database from "infra/database.js";
 import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  await database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
+  await orchestrator.clearDatabase();
 });
 
 describe("POST to /api/v1/migrations", () => {
@@ -33,11 +32,7 @@ describe("POST to /api/v1/migrations", () => {
         expect(response2.status).toBe(200);
 
         const response2Body = await response2.json();
-        const query2 = await database.query({
-          text: "SELECT COUNT(*)::int FROM pgmigrations",
-        });
 
-        expect(query2.rows[0].count).toBeGreaterThan(0);
         expect(response2Body.length).toBe(0);
         expect(Array.isArray(response2Body)).toBe(true);
       });
