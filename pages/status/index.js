@@ -22,9 +22,9 @@ function StatusContent() {
     maxConnections: null,
     version: undefined,
   });
-  const [updatedAtText, setUpdatedAtText] = useState("Carregando...");
+  const [updatedAtText, setUpdatedAtText] = useState("");
   const { isLoading, data } = useSWR("/api/v1/status", fetchApi, {
-    refreshInterval: 2000,
+    refreshInterval: 5000,
   });
 
   useEffect(() => {
@@ -38,6 +38,10 @@ function StatusContent() {
       setUpdatedAtText(new Date(data.updated_at).toLocaleString("pt-BR"));
     }
   }, [isLoading, data]);
+
+  if (isLoading) {
+    return <div>Carregando informações...</div>;
+  }
 
   return (
     <div>
